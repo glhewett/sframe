@@ -3,7 +3,10 @@
   "version-string": "0.1",
   "description": "Cisco SFrame C++ library",
   "dependencies": [
-    "openssl",
+    {
+      "name": "openssl",
+      "platform": "!osx"
+    },
     "doctest"
   ]
 }

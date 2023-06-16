@@ -1,6 +1,9 @@
 #pragma once
 
+#ifdef USE_CRYPTOKIT
 #include <openssl/hmac.h>
+#endif
+
 #include <sframe/sframe.h>
 
 #include <array>

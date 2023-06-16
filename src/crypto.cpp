@@ -1,7 +1,9 @@
 #include "crypto.h"
 
+#ifdef USE_CRYPTOKIT
 #include <openssl/err.h>
 #include <openssl/evp.h>
+#endif
 
 namespace sframe {
 

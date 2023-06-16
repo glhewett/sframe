@@ -48,8 +48,14 @@ endif()
 ### Dependencies
 ###
 
+
 # External libraries
-find_package(OpenSSL 1.1 REQUIRED)
+if (APPLE)
+    set(USE_CRYPTO_KIT ON)
+else()
+    set(USE_CRYPTO_KIT OFF)
+    find_package(OpenSSL 1.1 REQUIRED)
+endif()
 
 # gsl-lite fetched from GitHub
 include( ExternalProject )
@@ -86,7 +92,12 @@ file(GLOB_RECURSE LIB_SOURCES CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/src
 
 add_library(${LIB_NAME} ${LIB_HEADERS} ${LIB_SOURCES})
 add_dependencies(${LIB_NAME} gsl)
-target_link_libraries(${LIB_NAME} PRIVATE gsl OpenSSL::Crypto)
+if(USE_CRYPTO_KIT)
+    set_target_properties(${LIB_NAME} PROPERTIES USE_CRYPTOKIT ON)
+    target_link_libraries(${LIB_NAME} PRIVATE gsl "-framework CryptoKit")
+else()
+    target_link_libraries(${LIB_NAME} PRIVATE gsl OpenSSL::Crypto)
+endif()
 target_include_directories(${LIB_NAME}
   PUBLIC
     $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
